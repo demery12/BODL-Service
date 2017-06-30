@@ -1,37 +1,15 @@
-#our web app framework!
-
-#you could also generate a skeleton from scratch via
-#http://flask-appbuilder.readthedocs.io/en/latest/installation.html
-
-#Generating HTML from within Python is not fun, and actually pretty cumbersome because you have to do the
-#HTML escaping on your own to keep the application secure. Because of that Flask configures the Jinja2 template engine 
-#for you automatically.
-#requests are objects that flask handles (get set post, etc)
 from flask import Flask, render_template,request, Markup
-#scientific computing library for saving, reading, and resizing images
-from scipy.misc import imsave, imread, imresize
-#for matrix math
 import numpy as np
-#for importing our keras model
-import keras.models
-#for regular expressions, saves time dealing with string data
-import re
-
-#system level operations (like loading files)
-import sys 
-#for reading operating system data
-import os
-import argparse
-import os
 from six.moves import cPickle
 
 from model import Model
 
 from six import text_type
 import tensorflow as tf
+import os
 
 #initalize our flask app
-app = Flask(__name__)
+BODL_app = Flask(__name__)
 
 with open(os.path.join('good_save', 'config.pkl'), 'rb') as f:
    saved_args = cPickle.load(f)
@@ -68,15 +46,15 @@ def sample():
                                1).encode('utf-8'))
 
 
-@app.route('/')
+@BODL_app.route('/')
 def index():
    return render_template("index.html")
 
-@app.route('/about/')
+@BODL_app.route('/about/')
 def about():
    return render_template("about.html")
 
-@app.route('/predict/',methods=['GET','POST'])
+@BODL_app.route('/predict/',methods=['GET','POST'])
 def predict(model_loaded=False):
   
    drink_up = sample()
@@ -87,6 +65,6 @@ def predict(model_loaded=False):
 
 if __name__ == "__main__":
    #decide what port to run the app in
-   port = int(os.environ.get('PORT', 5000))
+   #port = int(os.environ.get('PORT', 5000))
    #run the app locally on the givn port
-   app.run(host='0.0.0.0', port=port)
+   BODL_app.run(host='0.0.0.0')
